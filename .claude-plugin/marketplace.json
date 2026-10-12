@@ -1,0 +1,12 @@
+{
+  "name": "claude-mermaid-mod",
+  "owner": { "name": "ngothanhluc" },
+  "description": "Mermaid diagrams drawn in place in Claude Code replies.",
+  "plugins": [
+    {
+      "name": "mermaid-mod",
+      "source": "./",
+      "description": "Draws ```mermaid blocks in Claude's replies as Unicode diagrams, in place."
+    }
+  ]
+}
