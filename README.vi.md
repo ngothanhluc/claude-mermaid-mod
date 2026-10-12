@@ -4,6 +4,8 @@
 
 Mod cho Claude Code, vẽ các khối ```` ```mermaid ```` trong câu trả lời của Claude thành diagram Unicode ngay tại chỗ.
 
+![Claude Code vẽ flowchart mermaid phía trên source của nó](demo/demo.gif)
+
 Trước:
 
 ````
@@ -68,6 +70,7 @@ npm test             # node --test cho transform, rồi claude plugin test cho h
 npm run golden       # sinh lại test/fixtures/*.txt từ các file .mmd
 npm run vendor       # build lại hooks/vendor/lovely-mermaid.js từ phiên bản đã pin
 claude --plugin-dir . # chạy thử trong một session thật
+vhs demo/demo.tape   # quay lại demo/demo.gif, .mp4 và .png (cần vhs)
 ```
 
 Toàn bộ logic nằm ở `src/transform.ts`, một hàm thuần nhận text của câu trả lời và trả về các segment. `hooks/register.ts` nối hàm đó với render hook `AssistantMessage` của Claude Code và lệnh `/mermaid`.

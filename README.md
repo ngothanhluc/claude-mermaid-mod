@@ -4,6 +4,8 @@
 
 A Claude Code mod that draws ```` ```mermaid ```` blocks in Claude's replies as Unicode diagrams, in place.
 
+![Claude Code drawing a mermaid flowchart above its source](demo/demo.gif)
+
 Before:
 
 ````
@@ -68,6 +70,7 @@ npm test             # node --test on the transform, then claude plugin test on 
 npm run golden       # rewrite test/fixtures/*.txt from the .mmd inputs
 npm run vendor       # rebuild hooks/vendor/lovely-mermaid.js from the pinned version
 claude --plugin-dir . # try it in a live session
+vhs demo/demo.tape   # re-record demo/demo.gif, .mp4 and .png (needs vhs)
 ```
 
 `src/transform.ts` is a pure function from reply text to segments, and holds all the logic. `hooks/register.ts` connects it to Claude Code's `AssistantMessage` render hook and the `/mermaid` command.
