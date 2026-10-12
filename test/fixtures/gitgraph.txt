@@ -1,0 +1,5 @@
+●   (main) ⇐ feature
+├─┐
+│ ● c1 (feature)
+├─┘
+●   c0

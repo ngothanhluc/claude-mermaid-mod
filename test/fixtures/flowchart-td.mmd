@@ -1,0 +1,6 @@
+flowchart TD
+  subgraph Build
+    S[Source] --> T[Compile]
+  end
+  T --> U(Test)
+  U --> V((Ship))

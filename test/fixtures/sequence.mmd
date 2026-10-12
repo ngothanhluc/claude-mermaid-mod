@@ -1,0 +1,11 @@
+sequenceDiagram
+  participant U as User
+  participant S as Server
+  U->>S: login
+  Note right of S: checks password
+  alt valid
+    S-->>U: token
+  else invalid
+    S-->>U: 401
+  end
+  Note over U,S: session established

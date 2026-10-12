@@ -1,0 +1,5 @@
+flowchart LR
+  A[Request] --> B{Cached?}
+  B -->|yes| C[Serve cache]
+  B -->|no| D[Fetch origin]
+  D --> C
