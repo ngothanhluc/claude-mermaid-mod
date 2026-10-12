@@ -1,0 +1,7 @@
+{
+  "name": "mermaid-mod",
+  "version": "0.0.0",
+  "description": "Draws ```mermaid blocks in Claude's replies as Unicode diagrams, in place",
+  "author": { "name": "ngothanhluc" },
+  "license": "MIT"
+}
