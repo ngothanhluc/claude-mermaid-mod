@@ -26,7 +26,7 @@ After:
                     └──────────────── yes ────────────────┘
 ```
 
-The mod changes only what the terminal draws. The stored message keeps its Mermaid source, and `ctrl+o` shows it.
+By default the diagram is drawn above its code block, so the source stays readable and copyable. `/mermaid diagram` hides the code block. The mod changes only what the terminal draws. The stored message keeps its Mermaid source, and `ctrl+o` shows it.
 
 ## Install
 
@@ -51,12 +51,14 @@ It keeps the original code block when:
 
 | Command | Effect |
 | --- | --- |
-| `/mermaid` | Show the current mode. |
+| `/mermaid` | Show the current settings. |
 | `/mermaid streaming` | Draw every Mermaid block, including one still being written. This is the default. |
 | `/mermaid final` | Draw only blocks whose closing fence has arrived. |
 | `/mermaid off` | Draw nothing. Code blocks stay as they are. |
+| `/mermaid both` | Draw the diagram above its code block. This is the default. |
+| `/mermaid diagram` | Draw the diagram in place of its code block. |
 
-The mode is saved for every session on the machine.
+Settings are saved for every session on the machine.
 
 ## Development
 

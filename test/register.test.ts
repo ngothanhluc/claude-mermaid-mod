@@ -16,7 +16,8 @@ test('a reply with a mermaid fence becomes Markdown prose around coloured Text r
   const json = JSON.stringify(await ui.drawn())
   expect(json).toContain('"color":"subtle"')
   expect(json).toContain('"color":"suggestion"')
-  expect(json).not.toContain('```mermaid')
+  expect(await ui.find({ type: 'Markdown', text: /```mermaid[\s\S]*After it/ })).toBeDefined()
+  expect(json.indexOf('Start ├')).toBeLessThan(json.indexOf('```mermaid'))
 })
 
 test('a later block of the reply draws no bullet', async ($, on) => {
@@ -44,10 +45,10 @@ test('/mermaid saves the mode to the store, and session start reads it back', as
   on('session.start', (_$, e) => ({ cwd: e.cwd }))
   on('ui.render', { component: 'AssistantMessage' }, (_$, e) => ({ type: 'Markdown', props: { text: e.props.text } }))
 
-  expect(await $.command.run({ ...COMMAND, command: 'mermaid', args: 'off' })).toMatchObject({ text: 'mermaid: off' })
+  expect(await $.command.run({ ...COMMAND, command: 'mermaid', args: 'off' })).toMatchObject({ text: 'mermaid: off, both' })
   expect(store.get('mode')).toBe('off')
-  expect(await $.command.run({ ...COMMAND, command: 'mermaid', args: '' })).toMatchObject({ text: 'mermaid: off' })
-  expect((await $.command.run({ ...COMMAND, command: 'mermaid', args: 'loud' })).text).toContain('unknown mode')
+  expect(await $.command.run({ ...COMMAND, command: 'mermaid', args: '' })).toMatchObject({ text: 'mermaid: off, both' })
+  expect((await $.command.run({ ...COMMAND, command: 'mermaid', args: 'loud' })).text).toContain('unknown setting')
 
   const mount = async () =>
     (await $.ui.mount({ plugin: PLUGIN, surface: 'terminal', component: 'AssistantMessage', props: { text: REPLY, isFirstOfReply: true }, viewport: VIEWPORT })).drawn()
@@ -56,5 +57,9 @@ test('/mermaid saves the mode to the store, and session start reads it back', as
   store.set('mode', 'final')
   await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
   expect(await mount()).toMatchObject({ type: 'Box' })
-  expect(await $.command.run({ ...COMMAND, command: 'mermaid', args: '' })).toMatchObject({ text: 'mermaid: final' })
+  expect(await $.command.run({ ...COMMAND, command: 'mermaid', args: '' })).toMatchObject({ text: 'mermaid: final, both' })
+
+  expect(await $.command.run({ ...COMMAND, command: 'mermaid', args: 'diagram' })).toMatchObject({ text: 'mermaid: final, diagram' })
+  expect(store.get('display')).toBe('diagram')
+  expect(JSON.stringify(await mount())).not.toContain('```mermaid')
 })

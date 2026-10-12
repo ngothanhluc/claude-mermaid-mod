@@ -1,46 +1,57 @@
 import type { Register } from 'claude-code'
 import { ROLE_STYLE, WARNING_COLOR } from '../src/theme.ts'
-import { type Mode, type Segment, transform } from '../src/transform.ts'
+import { type Display, type Mode, type Segment, transform } from '../src/transform.ts'
 
 const MODES: readonly Mode[] = ['off', 'final', 'streaming']
+const DISPLAYS: readonly Display[] = ['both', 'diagram']
 const BULLET = '⏺'
 // Measured: reply text sits behind a 2-column gutter ("⏺ "); one more column keeps the art off the edge.
 const GUTTER = 3
 const CACHE_LIMIT = 64
 
 let mode: Mode = 'streaming'
+let display: Display = 'both'
 const cache = new Map<string, Segment[] | null>()
 
 function cached(text: string, width: number | undefined): Segment[] | null {
-  const key = `${mode}\0${width}\0${text}`
+  const key = `${mode}\0${display}\0${width}\0${text}`
   if (cache.has(key)) return cache.get(key)!
-  const segments = transform(text, { mode, width })
+  const segments = transform(text, { mode, width, display })
   if (cache.size >= CACHE_LIMIT) cache.delete(cache.keys().next().value!)
   cache.set(key, segments)
   return segments
 }
 
 const isMode = (value: unknown): value is Mode => MODES.includes(value as Mode)
+const isDisplay = (value: unknown): value is Display => DISPLAYS.includes(value as Display)
+const status = () => ({ text: `mermaid: ${mode}, ${display}` })
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     const result = await next(e)
     const saved = await $.store.get('mode').catch(() => undefined)
     if (isMode(saved)) mode = saved
+    const savedDisplay = await $.store.get('display').catch(() => undefined)
+    if (isDisplay(savedDisplay)) display = savedDisplay
     await $.command
-      .register({ name: 'mermaid', description: 'Draw ```mermaid blocks as diagrams: off, final or streaming', argumentHint: '[off|final|streaming]', immediate: true })
+      .register({ name: 'mermaid', description: 'Draw ```mermaid blocks as diagrams: off, final or streaming; both or diagram', argumentHint: '[off|final|streaming|both|diagram]', immediate: true })
       .catch(err => $.ui.log(`mermaid-mod: /mermaid not registered: ${err}`))
     return result
   })
 
   on('command.run', { command: 'mermaid' }, async ($, e) => {
     const arg = e.args.trim().toLowerCase()
-    if (!arg) return { text: `mermaid: ${mode}` }
-    if (!isMode(arg)) return { text: `mermaid: unknown mode "${arg}"; use off, final or streaming` }
-    mode = arg
-    await $.store.set('mode', mode)
-    $.ui.invalidate('ui.render')
-    return { text: `mermaid: ${mode}` }
+    if (isMode(arg)) {
+      mode = arg
+      await $.store.set('mode', mode)
+    } else if (isDisplay(arg)) {
+      display = arg
+      await $.store.set('display', display)
+    } else if (arg) {
+      return { text: `mermaid: unknown setting "${arg}"; use off, final, streaming, both or diagram` }
+    }
+    if (arg) $.ui.invalidate('ui.render')
+    return status()
   })
 
   on('ui.render', { component: 'AssistantMessage' }, ($, e, next) => {

@@ -26,7 +26,7 @@ Sau:
                     └──────────────── yes ────────────────┘
 ```
 
-Mod chỉ thay đổi những gì terminal hiển thị. Message lưu lại vẫn giữ nguyên source Mermaid, và `ctrl+o` sẽ hiện source đó.
+Mặc định diagram được vẽ phía trên khối code, nên source vẫn đọc và copy được. `/mermaid diagram` sẽ ẩn khối code. Mod chỉ thay đổi những gì terminal hiển thị. Message lưu lại vẫn giữ nguyên source Mermaid, và `ctrl+o` sẽ hiện source đó.
 
 ## Cài đặt
 
@@ -51,12 +51,14 @@ Mod giữ nguyên khối code gốc khi:
 
 | Lệnh | Tác dụng |
 | --- | --- |
-| `/mermaid` | Xem chế độ hiện tại. |
+| `/mermaid` | Xem cấu hình hiện tại. |
 | `/mermaid streaming` | Vẽ mọi khối Mermaid, kể cả khối đang được viết dở. Đây là mặc định. |
 | `/mermaid final` | Chỉ vẽ khối đã có fence đóng. |
 | `/mermaid off` | Không vẽ gì. Các khối code giữ nguyên. |
+| `/mermaid both` | Vẽ diagram phía trên khối code. Đây là mặc định. |
+| `/mermaid diagram` | Vẽ diagram thay cho khối code. |
 
-Chế độ được lưu chung cho mọi session trên máy.
+Cấu hình được lưu chung cho mọi session trên máy.
 
 ## Phát triển
 

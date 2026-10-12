@@ -11,7 +11,7 @@ export const fixtureNames = () =>
 // What a fixture draws to: its diagram rows as plain text, or `null` when transform keeps the fence.
 export function drawn(name: string): string {
   const source = readFileSync(new URL(`${name}.mmd`, FIXTURES), 'utf8')
-  const segments = transform('```mermaid\n' + source + '```', { mode: 'final', width: 1000 })
+  const segments = transform('```mermaid\n' + source + '```', { mode: 'final', width: 1000, display: 'diagram' })
   if (!segments) return 'null\n'
   return segments
     .map(s => (s.kind === 'diagram' ? s.rows.map(r => r.map(span => span.text).join('').trimEnd()).join('\n') : `${s.kind}: ${s.text}`))

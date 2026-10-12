@@ -2,6 +2,7 @@ import { render, type Span } from '../hooks/vendor/lovely-mermaid.js'
 import { normalize } from './normalize.ts'
 
 export type Mode = 'off' | 'final' | 'streaming'
+export type Display = 'both' | 'diagram'
 export type Segment =
   | { kind: 'markdown'; text: string }
   | { kind: 'diagram'; rows: Span[][] }
@@ -28,7 +29,7 @@ function closes(fence: Fence, line: string): boolean {
 }
 
 // shortcut: a fence indented 1-3 spaces inside a list item counts as top level; parse list context if that misfires.
-export function transform(markdown: string, ctx: { mode: Mode; width: number | undefined }): Segment[] | null {
+export function transform(markdown: string, ctx: { mode: Mode; width: number | undefined; display: Display }): Segment[] | null {
   if (ctx.mode === 'off') return null
   const lines = markdown.split('\n')
   const segments: Segment[] = []
@@ -59,6 +60,7 @@ export function transform(markdown: string, ctx: { mode: Mode; width: number | u
     } else {
       flush()
       segments.push({ kind: 'diagram', rows: art.styled })
+      if (ctx.display === 'both') prose.push(...raw)
     }
     drewSomething = true
   }

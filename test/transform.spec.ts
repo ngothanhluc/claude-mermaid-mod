@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { type Mode, type Segment, transform } from '../src/transform.ts'
+import { type Display, type Mode, type Segment, transform } from '../src/transform.ts'
 
 const FLOW = 'flowchart LR\n  A[Start] --> B[Done]'
 const CLOSED = '```mermaid\n' + FLOW + '\n```'
@@ -9,8 +9,9 @@ const WIDE = 100
 
 const plain = (segments: Segment[] | null) =>
   segments?.map(s => (s.kind === 'diagram' ? s.rows.map(r => r.map(x => x.text).join('').trimEnd()).join('\n') : `[${s.kind}] ${s.text}`)).join('\n---\n') ?? null
-const run = (markdown: string, mode: Mode = 'streaming', width: number | undefined = WIDE) => transform(markdown, { mode, width })
-const unmeasured = (markdown: string) => transform(markdown, { mode: 'streaming', width: undefined })
+const run = (markdown: string, mode: Mode = 'streaming', width: number | undefined = WIDE, display: Display = 'diagram') =>
+  transform(markdown, { mode, width, display })
+const unmeasured = (markdown: string) => transform(markdown, { mode: 'streaming', width: undefined, display: 'diagram' })
 
 test('mode matrix: off never draws, final draws closed fences only, streaming draws both', () => {
   assert.equal(run(CLOSED, 'off'), null)
@@ -85,4 +86,16 @@ test('a fence kept raw merges into the prose around it', () => {
 
 test('no mermaid at all passes through', () => {
   assert.equal(run('Just words.'), null)
+})
+
+test('display both draws the diagram above its source fence', () => {
+  assert.deepEqual(
+    run('Intro\n\n' + CLOSED + '\n\nOutro', 'streaming', WIDE, 'both')?.map(s => (s.kind === 'diagram' ? 'diagram' : s.text)),
+    ['Intro\n', 'diagram', CLOSED + '\n\nOutro'],
+  )
+})
+
+test('display both still keeps only the fence when the diagram does not draw', () => {
+  assert.equal(run(CLOSED, 'streaming', 20, 'both'), null)
+  assert.equal(run(CLOSED, 'off', WIDE, 'both'), null)
 })
