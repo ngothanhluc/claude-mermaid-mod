@@ -1,6 +1,6 @@
-# claude-mermaid-mod
+<h1 align="center">claude-mermaid-mod</h1>
 
-[Tiếng Việt](README.vi.md)
+<p align="center"><a href="README.vi.md">🇻🇳 Tiếng Việt</a></p>
 
 A Claude Code mod that draws ```` ```mermaid ```` blocks in Claude's replies as Unicode diagrams, in place.
 
@@ -38,6 +38,18 @@ Requires Claude Code 2.1.287 or later.
 claude plugin marketplace add ngothanhluc/claude-mermaid-mod
 claude plugin install mermaid-mod@claude-mermaid-mod
 ```
+
+### Pairs well with show-me
+
+[show-me](https://github.com/humanlayer/skills/tree/main/plugins/show-me) is a skill by [HumanLayer](https://github.com/humanlayer) (MIT) that has Claude explain the current topic with diagrams, often as Mermaid. With mermaid-mod, those diagrams are drawn right in the terminal. This marketplace lists it, pulled from HumanLayer's repo:
+
+```sh
+claude plugin install show-me@claude-mermaid-mod
+```
+
+Then type `/show-me` in any conversation.
+
+It's the skill I reach for most. Instead of reading paragraphs about how a flow works, I type `/show-me` and get a call tree or a diagram in seconds. It's the fastest way I know to get a grip on unfamiliar code, and with mermaid-mod I never leave the terminal to see it.
 
 ## What it draws
 

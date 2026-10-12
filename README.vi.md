@@ -1,6 +1,6 @@
-# claude-mermaid-mod
+<h1 align="center">claude-mermaid-mod</h1>
 
-[English](README.md)
+<p align="center"><a href="README.md">🇬🇧 English</a></p>
 
 Mod cho Claude Code, vẽ các khối ```` ```mermaid ```` trong câu trả lời của Claude thành diagram Unicode ngay tại chỗ.
 
@@ -38,6 +38,18 @@ Cần Claude Code 2.1.287 trở lên.
 claude plugin marketplace add ngothanhluc/claude-mermaid-mod
 claude plugin install mermaid-mod@claude-mermaid-mod
 ```
+
+### Dùng cùng show-me
+
+[show-me](https://github.com/humanlayer/skills/tree/main/plugins/show-me) là skill của [HumanLayer](https://github.com/humanlayer) (MIT), giúp Claude giải thích chủ đề đang bàn bằng diagram, thường là Mermaid. Có mermaid-mod, các diagram đó được vẽ ngay trong terminal. Marketplace này có sẵn show-me, lấy trực tiếp từ repo của HumanLayer:
+
+```sh
+claude plugin install show-me@claude-mermaid-mod
+```
+
+Sau đó gõ `/show-me` trong bất kỳ cuộc trò chuyện nào.
+
+Đây là skill tôi dùng nhiều nhất. Thay vì đọc cả đoạn văn giải thích một luồng chạy thế nào, tôi gõ `/show-me` và có ngay call tree hoặc diagram trong vài giây. Đó là cách nhanh nhất tôi biết để nắm một đoạn code lạ, và có mermaid-mod thì tôi không phải rời terminal để xem.
 
 ## Vẽ được những gì
 
