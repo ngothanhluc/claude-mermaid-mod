@@ -15,15 +15,16 @@ const CLOSING = /^ {0,3}(`{3,}|~{3,})[ \t\r]*$/
 function openingOf(line: string, start: number): Fence | null {
   const m = OPENING.exec(line)
   if (!m) return null
-  const [, indent, run, info] = m
-  if (run[0] === '`' && info.includes('`')) return null
-  const lang = info.trim().split(/\s+/, 1)[0].toLowerCase()
-  return { char: run[0], length: run.length, indent: indent.length, isMermaid: lang === 'mermaid', start }
+  const [, indent = '', run = '', info = ''] = m
+  const char = run.charAt(0)
+  if (char === '`' && info.includes('`')) return null
+  const lang = info.trim().split(/\s+/, 1)[0]?.toLowerCase()
+  return { char, length: run.length, indent: indent.length, isMermaid: lang === 'mermaid', start }
 }
 
 function closes(fence: Fence, line: string): boolean {
-  const m = CLOSING.exec(line)
-  return m !== null && m[1][0] === fence.char && m[1].length >= fence.length
+  const run = CLOSING.exec(line)?.[1] ?? ''
+  return run.charAt(0) === fence.char && run.length >= fence.length
 }
 
 // shortcut: a fence indented 1-3 spaces inside a list item counts as top level; parse list context if that misfires.
@@ -63,8 +64,7 @@ export function transform(markdown: string, ctx: { mode: Mode; width: number | u
   }
 
   let fence: Fence | null = null
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i]
+  for (const [i, line] of lines.entries()) {
     if (!fence) {
       fence = openingOf(line, i)
       if (!fence?.isMermaid) prose.push(line)
