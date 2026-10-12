@@ -1,0 +1,15 @@
+{
+  "name": "mermaid-mod",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "vendor": "node scripts/vendor.mjs",
+    "golden": "node scripts/golden.ts",
+    "test": "node --test test/*.spec.ts && claude plugin test .",
+    "validate": "claude plugin validate ."
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10",
+    "lovely-mermaid": "0.3.3"
+  }
+}
