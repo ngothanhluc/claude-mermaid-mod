@@ -34,20 +34,22 @@ Mặc định diagram được vẽ phía trên khối code, nên source vẫn �
 
 Cần Claude Code 2.1.287 trở lên.
 
-```sh
-claude plugin marketplace add ngothanhluc/claude-mermaid-mod
-claude plugin install mermaid-mod@claude-mermaid-mod
+```text
+/plugin marketplace add ngothanhluc/claude-mermaid-mod
+/plugin install mermaid-mod@claude-mermaid-mod
 ```
 
 ### Dùng cùng show-me
 
 [show-me](https://github.com/humanlayer/skills/tree/main/plugins/show-me) là skill của [HumanLayer](https://github.com/humanlayer) (MIT), giúp Claude giải thích chủ đề đang bàn bằng diagram, thường là Mermaid. Có mermaid-mod, các diagram đó được vẽ ngay trong terminal. Marketplace này có sẵn show-me, lấy trực tiếp từ repo của HumanLayer:
 
-```sh
-claude plugin install show-me@claude-mermaid-mod
+```text
+/plugin install show-me@claude-mermaid-mod
 ```
 
 Sau đó gõ `/show-me` trong bất kỳ cuộc trò chuyện nào.
+
+![/show-me giải thích luồng đăng nhập, diagram sequence Mermaid được mermaid-mod vẽ ra](demo/show-me.gif)
 
 Đây là skill tôi dùng nhiều nhất. Thay vì đọc cả đoạn văn giải thích một luồng chạy thế nào, tôi gõ `/show-me` và có ngay call tree hoặc diagram trong vài giây. Đó là cách nhanh nhất tôi biết để nắm một đoạn code lạ, và có mermaid-mod thì tôi không phải rời terminal để xem.
 
@@ -83,6 +85,7 @@ npm run golden       # sinh lại test/fixtures/*.txt từ các file .mmd
 npm run vendor       # build lại hooks/vendor/lovely-mermaid.js từ phiên bản đã pin
 claude --plugin-dir . # chạy thử trong một session thật
 vhs demo/demo.tape   # quay lại demo/demo.gif, .mp4 và .png (cần vhs)
+vhs demo/show-me.tape  # quay lại demo/show-me.gif
 ```
 
 Toàn bộ logic nằm ở `src/transform.ts`, một hàm thuần nhận text của câu trả lời và trả về các segment. `hooks/register.ts` nối hàm đó với render hook `AssistantMessage` của Claude Code và lệnh `/mermaid`.

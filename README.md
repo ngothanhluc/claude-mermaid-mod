@@ -34,20 +34,22 @@ By default the diagram is drawn above its code block, so the source stays readab
 
 Requires Claude Code 2.1.287 or later.
 
-```sh
-claude plugin marketplace add ngothanhluc/claude-mermaid-mod
-claude plugin install mermaid-mod@claude-mermaid-mod
+```text
+/plugin marketplace add ngothanhluc/claude-mermaid-mod
+/plugin install mermaid-mod@claude-mermaid-mod
 ```
 
 ### Pairs well with show-me
 
 [show-me](https://github.com/humanlayer/skills/tree/main/plugins/show-me) is a skill by [HumanLayer](https://github.com/humanlayer) (MIT) that has Claude explain the current topic with diagrams, often as Mermaid. With mermaid-mod, those diagrams are drawn right in the terminal. This marketplace lists it, pulled from HumanLayer's repo:
 
-```sh
-claude plugin install show-me@claude-mermaid-mod
+```text
+/plugin install show-me@claude-mermaid-mod
 ```
 
 Then type `/show-me` in any conversation.
+
+![/show-me explaining a login flow, its Mermaid sequence diagram drawn by mermaid-mod](demo/show-me.gif)
 
 It's the skill I reach for most. Instead of reading paragraphs about how a flow works, I type `/show-me` and get a call tree or a diagram in seconds. It's the fastest way I know to get a grip on unfamiliar code, and with mermaid-mod I never leave the terminal to see it.
 
@@ -83,6 +85,7 @@ npm run golden       # rewrite test/fixtures/*.txt from the .mmd inputs
 npm run vendor       # rebuild hooks/vendor/lovely-mermaid.js from the pinned version
 claude --plugin-dir . # try it in a live session
 vhs demo/demo.tape   # re-record demo/demo.gif, .mp4 and .png (needs vhs)
+vhs demo/show-me.tape  # re-record demo/show-me.gif
 ```
 
 `src/transform.ts` is a pure function from reply text to segments, and holds all the logic. `hooks/register.ts` connects it to Claude Code's `AssistantMessage` render hook and the `/mermaid` command.
